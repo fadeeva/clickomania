@@ -49,39 +49,77 @@ def grid_coord(xy):
     x, y = xy
     return (math.ceil(x / SQUARE_SIZE) - 1, 15 - math.ceil(y / SQUARE_SIZE))
 
-def is_destructible(mouse_coord):
-    col, row = grid_coord(mouse_coord)
-    check_neighbours = { 'left': True, 'right': True, 'top': True, 'bottom': True }
-    
+def check_neighbours(row, col):
+    test = { 'left': True, 'right': True, 'top': True, 'bottom': True }
     if row == 0:
-        check_neighbours['bottom'] = False
+        test['bottom'] = False
     
     if row == len(GAME_FIELD) - 1:
-        check_neighbours['top'] = False
+        test['top'] = False
     
     if col == 0:
-        check_neighbours['left'] = False
+        test['left'] = False
     
     if col == len(GAME_FIELD[0]) - 1:
-        check_neighbours['right'] = False
-    
-    if check_neighbours['left']:
-        if GAME_FIELD[row][col] == GAME_FIELD[row][col-1]:
-            return True
+        test['right'] = False
         
-    if check_neighbours['right']:
-        if GAME_FIELD[row][col] == GAME_FIELD[row][col+1]:
-            return True
-    
-    if check_neighbours['top']:
-        if GAME_FIELD[row][col] == GAME_FIELD[row+1][col]:
-            return True
-    
-    if check_neighbours['bottom']:
-        if GAME_FIELD[row][col] == GAME_FIELD[row-1][col]:
-            return True
+    return test
 
-    return False
+def is_destructible(mouse_coord):
+    col, row = grid_coord(mouse_coord)
+
+def gather_squares(row, col):
+    neighbours_test = check_neighbours(row, col)
+    
+    n = [(row, col)]
+
+    GF_ROW = len(GAME_FIELD)
+    GF_COL = len(GAME_FIELD[0])
+    
+    for i in range(col+1, GF_COL):
+        if GAME_FIELD[row][col] == GAME_FIELD[row][i]:
+            n.append((row, i))
+        else:
+            break
+    
+    for i in range(col-1, 0, -1):
+        if GAME_FIELD[row][col] == GAME_FIELD[row][i]:
+            n.append((row, i))
+        else:
+            break
+    
+    for i in range(row+1, GF_ROW):
+        if GAME_FIELD[row][col] == GAME_FIELD[i][col]:
+            n.append((i, col))
+        else:
+            break
+    
+    for i in range(row-1, 0, -1):
+        if GAME_FIELD[row][col] == GAME_FIELD[i][col]:
+            n.append((i, col))
+        else:
+            break
+    
+    
+#    if check_neighbours['left']:
+#        if GAME_FIELD[row][col] == GAME_FIELD[row][col-1]:
+#            n.append((row, col-1))
+#    
+#    
+#    if check_neighbours['right']:
+#        if GAME_FIELD[row][col] == GAME_FIELD[row][col+1]:
+#            n.append((row, col+1))
+#    
+#    
+#    if check_neighbours['top']:
+#        if GAME_FIELD[row][col] == GAME_FIELD[row+1][col]:
+#            n.append((row+1, col))
+#    
+#    if check_neighbours['bottom']:
+#        if GAME_FIELD[row][col] == GAME_FIELD[row-1][col]:
+#            n.append((row-1, col))
+
+    return neighbours_test
 
 game_display.fill(black)
 

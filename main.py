@@ -49,6 +49,14 @@ def grid_coord(xy):
     x, y = xy
     return (math.ceil(x / SQUARE_SIZE) - 1, 15 - math.ceil(y / SQUARE_SIZE))
 
+# ВОТ ЭТУ ХУЙНЮ ПЕРЕПИСАТЬ!!!
+def make_it_black():
+    if len(full_n) > 1:
+        for i in range(len(full_n)):
+            pygame.draw.rect(game_display, black, pygame.Rect(full_n[i][1]*SQUARE_SIZE,
+                                                              (14-full_n[i][0])*SQUARE_SIZE,
+                                                              SQUARE_SIZE, SQUARE_SIZE))
+
 def check_neighbours(row, col):
     test = { 'left': True, 'right': True, 'top': True, 'bottom': True }
     if row == 0:
@@ -67,59 +75,46 @@ def check_neighbours(row, col):
 
 def is_destructible(mouse_coord):
     col, row = grid_coord(mouse_coord)
+    clean()
+    n.append((row, col))
+    gather_squares(row, col)
+
+    return {}
+
+def clean():
+    global n
+    global full_n
+    n = []
+    full_n = []
+
+full_n = []
+n = []
 
 def gather_squares(row, col):
     neighbours_test = check_neighbours(row, col)
     
-    n = [(row, col)]
-
+    full_n.append((row, col))
+    n.remove((row, col))
+    
     GF_ROW = len(GAME_FIELD)
     GF_COL = len(GAME_FIELD[0])
     
-    for i in range(col+1, GF_COL):
-        if GAME_FIELD[row][col] == GAME_FIELD[row][i]:
-            n.append((row, i))
-        else:
-            break
+    if neighbours_test['right'] and (GAME_FIELD[row][col] == GAME_FIELD[row][col+1]) and (row, col+1) not in full_n:
+        n.append((row, col+1))
     
-    for i in range(col-1, 0, -1):
-        if GAME_FIELD[row][col] == GAME_FIELD[row][i]:
-            n.append((row, i))
-        else:
-            break
+    if neighbours_test['left'] and (GAME_FIELD[row][col] == GAME_FIELD[row][col-1]) and (row, col-1) not in full_n:
+        n.append((row, col-1))
     
-    for i in range(row+1, GF_ROW):
-        if GAME_FIELD[row][col] == GAME_FIELD[i][col]:
-            n.append((i, col))
-        else:
-            break
+    if neighbours_test['top'] and (GAME_FIELD[row][col] == GAME_FIELD[row+1][col]) and (row+1, col) not in full_n:
+        n.append((row+1, col))
     
-    for i in range(row-1, 0, -1):
-        if GAME_FIELD[row][col] == GAME_FIELD[i][col]:
-            n.append((i, col))
-        else:
-            break
+    if neighbours_test['bottom'] and (GAME_FIELD[row][col] == GAME_FIELD[row-1][col]) and (row-1, col) not in full_n:
+        n.append((row-1, col))
     
-    
-#    if check_neighbours['left']:
-#        if GAME_FIELD[row][col] == GAME_FIELD[row][col-1]:
-#            n.append((row, col-1))
-#    
-#    
-#    if check_neighbours['right']:
-#        if GAME_FIELD[row][col] == GAME_FIELD[row][col+1]:
-#            n.append((row, col+1))
-#    
-#    
-#    if check_neighbours['top']:
-#        if GAME_FIELD[row][col] == GAME_FIELD[row+1][col]:
-#            n.append((row+1, col))
-#    
-#    if check_neighbours['bottom']:
-#        if GAME_FIELD[row][col] == GAME_FIELD[row-1][col]:
-#            n.append((row-1, col))
+    if len(n) >= 1:
+        gather_squares(n[0][0], n[0][1])
 
-    return neighbours_test
+    return ''
 
 game_display.fill(black)
 
@@ -143,7 +138,9 @@ def game_loop():
                 quit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print(is_destructible(pygame.mouse.get_pos()))
+                is_destructible(pygame.mouse.get_pos())
+#                print(full_n)
+                make_it_black()
 
 
         pygame.display.update()

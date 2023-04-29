@@ -56,7 +56,32 @@ def make_it_black():
             pygame.draw.rect(game_display, black, pygame.Rect(full_n[i][1]*SQUARE_SIZE,
                                                               (14-full_n[i][0])*SQUARE_SIZE,
                                                               SQUARE_SIZE, SQUARE_SIZE))
+# И ЭТУ НАВЕРНОЕ ТОЖЕ!!!
+def rebuild_grid():
+    l4 = []
+    col = []
+    for j in range(len(GAME_FIELD[0])):
+        for i in range(len(GAME_FIELD)):
+            col.append(GAME_FIELD[i][j])
+        l4.append(col)
+        col = []
 
+    for f in range(len(l4)):
+        if 'DEL' in l4[f]:
+            l4[f][:] = (val for val in l4[f] if val != 'DEL')
+        l4[f] = [0]*(len(GAME_FIELD) - len(l4[f])) + l4[f][:len(GAME_FIELD)]      
+
+    GAME_FIELD.clear()
+    row = []
+    for j in range(len(l4[0])):
+        for i in range(len(l4)):
+            row.append(l4[i][j])
+        GAME_FIELD.append(row)
+        row = []
+
+def redraw_squares():
+    pass
+        
 def check_neighbours(row, col):
     test = { 'left': True, 'right': True, 'top': True, 'bottom': True }
     if row == 0:
@@ -78,18 +103,17 @@ def is_destructible(mouse_coord):
     clean()
     n.append((row, col))
     gather_squares(row, col)
-
+    
+    print(GAME_FIELD)
+    
     return {}
 
 def clean():
-    global n
-    global full_n
-    n = []
-    full_n = []
+    n.clear()
+    full_n.clear()
 
 full_n = []
 n = []
-
 def gather_squares(row, col):
     neighbours_test = check_neighbours(row, col)
     

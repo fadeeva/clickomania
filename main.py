@@ -51,11 +51,19 @@ def grid_coord(xy):
 
 # ВОТ ЭТУ ХУЙНЮ ПЕРЕПИСАТЬ!!!
 def make_it_black():
-    if len(full_n) > 1:
-        for i in range(len(full_n)):
-            pygame.draw.rect(game_display, black, pygame.Rect(full_n[i][1]*SQUARE_SIZE,
-                                                              (14-full_n[i][0])*SQUARE_SIZE,
-                                                              SQUARE_SIZE, SQUARE_SIZE))
+    for i in range(len(full_n)):
+        GAME_FIELD[full_n[i][0]][full_n[i][1]] = 'DEL'
+    
+#    if len(full_n) > 1:
+#        for i in range(len(full_n)):
+#            pygame.draw.rect(game_display, black, pygame.Rect(full_n[i][1] * SQUARE_SIZE,
+#                                                              (14 - full_n[i][0]) * SQUARE_SIZE,
+#                                                              SQUARE_SIZE, SQUARE_SIZE))
+    game_display.fill(black)
+    game_display.blit(background, (100, 182))
+    rebuild_grid()
+    redraw_squares()
+    
 # И ЭТУ НАВЕРНОЕ ТОЖЕ!!!
 def rebuild_grid():
     l4 = []
@@ -69,7 +77,7 @@ def rebuild_grid():
     for f in range(len(l4)):
         if 'DEL' in l4[f]:
             l4[f][:] = (val for val in l4[f] if val != 'DEL')
-        l4[f] = [0]*(len(GAME_FIELD) - len(l4[f])) + l4[f][:len(GAME_FIELD)]      
+        l4[f] = l4[f][:len(GAME_FIELD)] + [0]*(len(GAME_FIELD) - len(l4[f]))
 
     GAME_FIELD.clear()
     row = []
@@ -80,7 +88,14 @@ def rebuild_grid():
         row = []
 
 def redraw_squares():
-    pass
+#    print(GAME_FIELD[12][9])
+    for j in range(len(GAME_FIELD)):
+        y = display_height - SQUARE_SIZE*j
+        for i in range(len(GAME_FIELD[0])):
+            if GAME_FIELD[j-1][i]:
+                color = GAME_FIELD[j-1][i]
+                pygame.draw.rect(game_display, color, pygame.Rect(i*SQUARE_SIZE, y, SQUARE_SIZE, SQUARE_SIZE))
+            
         
 def check_neighbours(row, col):
     test = { 'left': True, 'right': True, 'top': True, 'bottom': True }
@@ -103,9 +118,7 @@ def is_destructible(mouse_coord):
     clean()
     n.append((row, col))
     gather_squares(row, col)
-    
-    print(GAME_FIELD)
-    
+
     return {}
 
 def clean():

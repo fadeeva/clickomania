@@ -1,17 +1,18 @@
 import pygame
-import time
+# import time
 import random
 import math
+
 
 bg_img = 'prison_mike.jpg'
 
 pygame.init()
 
-display_width = 400
+display_width  = 400
 display_height = 600
 
-black = (36, 52, 53)
-white = (232, 245, 240)
+black  = (36, 52, 53)
+white  = (232, 245, 240)
 
 red    = (249, 102, 56)
 blue   = (48, 96, 249)
@@ -30,40 +31,51 @@ clock = pygame.time.Clock()
 
 background = pygame.image.load(bg_img).convert()
 
+
 def get_color():
     return COLORS[random.randint(0, len(COLORS) - 1)]
 
-def draw_squares():    
+
+def draw_squares():
     for j in range(1, 14):
         y = display_height - SQUARE_SIZE*j
         row = []
         for i in range(10):
             color = get_color()
             row.append(color)
-            pygame.draw.rect(game_display, color, pygame.Rect(i*SQUARE_SIZE, y, SQUARE_SIZE, SQUARE_SIZE))
+            pygame.draw.rect(game_display, color, pygame.Rect(i*SQUARE_SIZE,
+                                                              y,
+                                                              SQUARE_SIZE,
+                                                              SQUARE_SIZE))
 
         GAME_FIELD.append(row)
-    #pygame.display.flip()
+    # pygame.display.flip()
+
 
 def grid_coord(xy):
     x, y = xy
     return (math.ceil(x / SQUARE_SIZE) - 1, 15 - math.ceil(y / SQUARE_SIZE))
 
+
 # ВОТ ЭТУ ХУЙНЮ ПЕРЕПИСАТЬ!!!
 def make_it_black():
     for i in range(len(full_n)):
         GAME_FIELD[full_n[i][0]][full_n[i][1]] = 'DEL'
-    
+
 #    if len(full_n) > 1:
 #        for i in range(len(full_n)):
-#            pygame.draw.rect(game_display, black, pygame.Rect(full_n[i][1] * SQUARE_SIZE,
-#                                                              (14 - full_n[i][0]) * SQUARE_SIZE,
-#                                                              SQUARE_SIZE, SQUARE_SIZE))
+#            pygame.draw.rect(game_display,
+#                             black,
+#                             pygame.Rect(full_n[i][1] * SQUARE_SIZE,
+#                                         (14 - full_n[i][0]) * SQUARE_SIZE,
+#                                         SQUARE_SIZE,
+#                                         SQUARE_SIZE))
     game_display.fill(black)
     game_display.blit(background, (100, 182))
     rebuild_grid()
     redraw_squares()
-    
+
+
 # И ЭТУ НАВЕРНОЕ ТОЖЕ!!!
 def rebuild_grid():
     l4 = []
@@ -87,31 +99,38 @@ def rebuild_grid():
         GAME_FIELD.append(row)
         row = []
 
+
 def redraw_squares():
-#    print(GAME_FIELD[12][9])
+    # print(GAME_FIELD[12][9])
     for j in range(len(GAME_FIELD)):
         y = display_height - SQUARE_SIZE*j
         for i in range(len(GAME_FIELD[0])):
             if GAME_FIELD[j-1][i]:
                 color = GAME_FIELD[j-1][i]
-                pygame.draw.rect(game_display, color, pygame.Rect(i*SQUARE_SIZE, y, SQUARE_SIZE, SQUARE_SIZE))
-            
-        
+                pygame.draw.rect(game_display,
+                                 color,
+                                 pygame.Rect(i*SQUARE_SIZE,
+                                             y,
+                                             SQUARE_SIZE,
+                                             SQUARE_SIZE))
+
+
 def check_neighbours(row, col):
-    test = { 'left': True, 'right': True, 'top': True, 'bottom': True }
+    test = {'left': True, 'right': True, 'top': True, 'bottom': True}
     if row == 0:
         test['bottom'] = False
-    
+
     if row == len(GAME_FIELD) - 1:
         test['top'] = False
-    
+
     if col == 0:
         test['left'] = False
-    
+
     if col == len(GAME_FIELD[0]) - 1:
         test['right'] = False
-        
+
     return test
+
 
 def is_destructible(mouse_coord):
     col, row = grid_coord(mouse_coord)
@@ -121,50 +140,56 @@ def is_destructible(mouse_coord):
 
     return {}
 
+
 def clean():
     n.clear()
     full_n.clear()
 
+
 full_n = []
 n = []
+
+
 def gather_squares(row, col):
     neighbours_test = check_neighbours(row, col)
-    
+
     full_n.append((row, col))
     n.remove((row, col))
-    
-    GF_ROW = len(GAME_FIELD)
-    GF_COL = len(GAME_FIELD[0])
-    
+
+#    GF_ROW = len(GAME_FIELD)
+#    GF_COL = len(GAME_FIELD[0])
+
     if neighbours_test['right'] and (GAME_FIELD[row][col] == GAME_FIELD[row][col+1]) and (row, col+1) not in full_n:
         n.append((row, col+1))
-    
+
     if neighbours_test['left'] and (GAME_FIELD[row][col] == GAME_FIELD[row][col-1]) and (row, col-1) not in full_n:
         n.append((row, col-1))
-    
+
     if neighbours_test['top'] and (GAME_FIELD[row][col] == GAME_FIELD[row+1][col]) and (row+1, col) not in full_n:
         n.append((row+1, col))
-    
+
     if neighbours_test['bottom'] and (GAME_FIELD[row][col] == GAME_FIELD[row-1][col]) and (row-1, col) not in full_n:
         n.append((row-1, col))
-    
+
     if len(n) >= 1:
         gather_squares(n[0][0], n[0][1])
 
     return ''
+
 
 game_display.fill(black)
 
 game_display.blit(background, (100, 182))
 draw_squares()
 
-# print(len(GAME_FIELD))
+#print(len(GAME_FIELD))
 
-def game_loop():	
-    x = display_width * 0.45
-    y = display_height * 0.8
 
-    x_change = 0
+def game_loop():
+#    x = display_width * 0.45
+#    y = display_height * 0.8
+
+#    x_change = 0
 
     game_exit = False
 
@@ -179,9 +204,8 @@ def game_loop():
 #                print(full_n)
                 make_it_black()
 
-
         pygame.display.update()
-        
+
 
 game_loop()
 

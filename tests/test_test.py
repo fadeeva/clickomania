@@ -1,9 +1,6 @@
-import unittest
+import pytest
+from clickomania import main
 
-class TestTest(unittest.TestCase):
-    
-    def test_sum(self):
-        self.assertEqual(sum([1, 2, 3]), 6, 'Should be 6')
 
-if __name__ == '__main__':
-    unittest.main()
+def test_prison_mike_photo():
+    assert main.bg_img == 'prison_mike.jpg', 'Should prison_mike.jpg'

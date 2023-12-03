@@ -1,12 +1,9 @@
 import pygame
-# import time
 import random
 import math
 
 
 bg_img = 'prison_mike.jpg'
-
-pygame.init()
 
 display_width  = 400
 display_height = 600
@@ -24,12 +21,6 @@ COLORS = [red, blue, green, yellow, brown]
 SQUARE_SIZE = 40
 
 GAME_FIELD = []
-
-game_display = pygame.display.set_mode((display_width, display_height))
-pygame.display.set_caption('CLICKOMANIA')
-clock = pygame.time.Clock()
-
-background = pygame.image.load(bg_img).convert()
 
 
 def get_color():
@@ -177,11 +168,6 @@ def gather_squares(row, col):
     return ''
 
 
-game_display.fill(black)
-
-game_display.blit(background, (100, 182))
-draw_squares()
-
 #print(len(GAME_FIELD))
 
 
@@ -207,7 +193,21 @@ def game_loop():
         pygame.display.update()
 
 
-game_loop()
+if __name__ == '__main__':
+    pygame.init()
+    
+    game_display = pygame.display.set_mode((display_width, display_height))
+    pygame.display.set_caption('CLICKOMANIA')
+    clock = pygame.time.Clock()
 
-pygame.quit()
-quit()
+    background = pygame.image.load(bg_img).convert()
+    
+    game_display.fill(black)
+
+    game_display.blit(background, (100, 182))
+    draw_squares()
+    
+    game_loop()
+
+    pygame.quit()
+    quit()

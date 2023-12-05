@@ -1,6 +1,12 @@
 import pytest
+import pygame
 from clickomania import main
 
 
-def test_prison_mike_photo():
-    assert main.bg_img == 'prison_mike.jpg', 'Should prison_mike.jpg'
+def test_get_color():
+    t_color = main.get_color()
+    assert t_color in main.COLORS, 'Color should be in COLORS list'
+
+
+def test_game_field():
+    pass

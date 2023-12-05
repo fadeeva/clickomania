@@ -20,27 +20,29 @@ brown  = (127, 113, 97)
 COLORS = [red, blue, green, yellow, brown]
 SQUARE_SIZE = 40
 
+ROWS = 13
+COLS = 10
+
 GAME_FIELD = []
 
+TEST_EVENT = pygame.event.custom_type()
 
 def get_color():
     return COLORS[random.randint(0, len(COLORS) - 1)]
 
 
 def draw_squares():
-    for j in range(1, 14):
+    for j in range(1, ROWS+1):
         y = display_height - SQUARE_SIZE*j
         row = []
-        for i in range(10):
+        for i in range(COLS):
             color = get_color()
             row.append(color)
-            pygame.draw.rect(game_display, color, pygame.Rect(i*SQUARE_SIZE,
-                                                              y,
-                                                              SQUARE_SIZE,
-                                                              SQUARE_SIZE))
+            pygame.draw.rect(game_display,
+                             color,
+                             pygame.Rect(i*SQUARE_SIZE, y, SQUARE_SIZE, SQUARE_SIZE))
 
         GAME_FIELD.append(row)
-    # pygame.display.flip()
 
 
 def grid_coord(xy):
@@ -147,9 +149,6 @@ def gather_squares(row, col):
     full_n.append((row, col))
     n.remove((row, col))
 
-#    GF_ROW = len(GAME_FIELD)
-#    GF_COL = len(GAME_FIELD[0])
-
     if neighbours_test['right'] and (GAME_FIELD[row][col] == GAME_FIELD[row][col+1]) and (row, col+1) not in full_n:
         n.append((row, col+1))
 
@@ -168,18 +167,17 @@ def gather_squares(row, col):
     return ''
 
 
-#print(len(GAME_FIELD))
-
-
-def game_loop():
-#    x = display_width * 0.45
-#    y = display_height * 0.8
-
-#    x_change = 0
-
-    game_exit = False
-
-    while not game_exit:
+def game_loop(testing: bool=False):    
+    
+    game_running = True
+    while game_running:
+        
+#        if testing:
+#            attr_dict = (yield)
+#            test_event = pygame.event.Event(TEST_EVENT, attr_dict)
+#            pygame.event.post(test_event)
+#        pygame.time.wait(1000)
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -187,7 +185,6 @@ def game_loop():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 is_destructible(pygame.mouse.get_pos())
-#                print(full_n)
                 make_it_black()
 
         pygame.display.update()
@@ -208,6 +205,6 @@ if __name__ == '__main__':
     draw_squares()
     
     game_loop()
-
+    
     pygame.quit()
     quit()

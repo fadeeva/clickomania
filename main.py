@@ -30,33 +30,21 @@ SQUARE_SIZE = 40
 ROWS = 13
 COLS = 10
 
-GAME_FIELD = []
 
 def get_color():
     return list(COLORS.keys())[random.randint(0, len(COLORS) - 1)]
 
 
-def draw_squares():
-    GAME_FIELD = [[get_color() for i in range(ROWS)] for _ in range(COLS)]
-    for col in GAME_FIELD:
-        for clr in col:
-            print(clr, GAME_FIELD.index(col), col.index(clr))
-        break
-            
-    
+GAME_FIELD = [[get_color() for _ in range(ROWS)] for _ in range(COLS)]
 
-#def draw_squares():
-#    for j in range(ROWS+1):
-#        y = display_height - SQUARE_SIZE*j
-#        row = []
-#        for i in range(COLS):
-#            color = get_color()
-#            row.append(color)
-#            pygame.draw.rect(game_display,
-#                             color,
-#                             pygame.Rect(i*SQUARE_SIZE, y, SQUARE_SIZE, SQUARE_SIZE))
-#
-#        GAME_FIELD.append(row)
+
+def draw_squares():
+    for i, col in enumerate(GAME_FIELD):
+        for j, clr in enumerate(col):
+            pygame.draw.rect(game_display,
+                             COLORS[clr],
+                             pygame.Rect(i*SQUARE_SIZE, abs(j-14)*SQUARE_SIZE,
+                                         SQUARE_SIZE, SQUARE_SIZE))
 
 
 def grid_coord(xy):

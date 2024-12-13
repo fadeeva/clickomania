@@ -52,49 +52,6 @@ def grid_coord(xy):
     return (math.ceil(x / SQUARE_SIZE) - 1, 15 - math.ceil(y / SQUARE_SIZE))
 
 
-# ВОТ ЭТУ ХУЙНЮ ПЕРЕПИСАТЬ!!!
-def make_it_black():
-    for i in range(len(full_n)):
-        GAME_FIELD[full_n[i][0]][full_n[i][1]] = 'DEL'
-
-#    if len(full_n) > 1:
-#        for i in range(len(full_n)):
-#            pygame.draw.rect(game_display,
-#                             black,
-#                             pygame.Rect(full_n[i][1] * SQUARE_SIZE,
-#                                         (14 - full_n[i][0]) * SQUARE_SIZE,
-#                                         SQUARE_SIZE,
-#                                         SQUARE_SIZE))
-    game_display.fill(black)
-    game_display.blit(background, (100, 182))
-    rebuild_grid()
-    redraw_squares()
-
-
-# И ЭТУ НАВЕРНОЕ ТОЖЕ!!!
-def rebuild_grid():
-    l4 = []
-    col = []
-    for j in range(len(GAME_FIELD[0])):
-        for i in range(len(GAME_FIELD)):
-            col.append(GAME_FIELD[i][j])
-        l4.append(col)
-        col = []
-
-    for f in range(len(l4)):
-        if 'DEL' in l4[f]:
-            l4[f][:] = (val for val in l4[f] if val != 'DEL')
-        l4[f] = l4[f][:len(GAME_FIELD)] + [0]*(len(GAME_FIELD) - len(l4[f]))
-
-    GAME_FIELD.clear()
-    row = []
-    for j in range(len(l4[0])):
-        for i in range(len(l4)):
-            row.append(l4[i][j])
-        GAME_FIELD.append(row)
-        row = []
-
-
 def redraw_squares():
     # print(GAME_FIELD[12][9])
     for j in range(len(GAME_FIELD)):

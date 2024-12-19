@@ -52,36 +52,11 @@ def grid_coord(xy):
     return (math.ceil(x / SQUARE_SIZE) - 1, 15 - math.ceil(y / SQUARE_SIZE))
 
 
-def redraw_squares():
-    # print(GAME_FIELD[12][9])
-    for j in range(len(GAME_FIELD)):
-        y = display_height - SQUARE_SIZE*j
-        for i in range(len(GAME_FIELD[0])):
-            if GAME_FIELD[j-1][i]:
-                color = GAME_FIELD[j-1][i]
-                pygame.draw.rect(game_display,
-                                 color,
-                                 pygame.Rect(i*SQUARE_SIZE,
-                                             y,
-                                             SQUARE_SIZE,
-                                             SQUARE_SIZE))
 
-
-def check_neighbours(row, col):
-    test = {'left': True, 'right': True, 'top': True, 'bottom': True}
-    if row == 0:
-        test['bottom'] = False
-
-    if row == len(GAME_FIELD) - 1:
-        test['top'] = False
-
-    if col == 0:
-        test['left'] = False
-
-    if col == len(GAME_FIELD[0]) - 1:
-        test['right'] = False
-
-    return test
+def check_neighbours(col, row):
+    nb = []
+    
+    return nb
 
 
 def is_destructible(mouse_coord):
@@ -89,7 +64,9 @@ def is_destructible(mouse_coord):
     clean()
     n.append((row, col))
 #    gather_squares(row, col)
-    print(col, row)
+#    print(col, row)
+#    print(GAME_FIELD[col][row])
+    print(check_neighbours(col, row))
     return {}
 
 

@@ -43,14 +43,16 @@ def draw_squares():
         for j, clr in enumerate(col):
             pygame.draw.rect(game_display,
                              COLORS[clr],
-                             pygame.Rect(i*SQUARE_SIZE, abs(j-14)*SQUARE_SIZE,
-                                         SQUARE_SIZE, SQUARE_SIZE))
+                             pygame.Rect(i*SQUARE_SIZE,
+                                         abs(j-14)*SQUARE_SIZE,
+                                         SQUARE_SIZE,
+                                         SQUARE_SIZE))
 
 
 def grid_coord(xy):
     x, y = xy
-    return (math.ceil(x / SQUARE_SIZE) - 1, 15 - math.ceil(y / SQUARE_SIZE))
-
+    return (math.ceil(x / SQUARE_SIZE) - 1,
+            15 - math.ceil(y / SQUARE_SIZE))
 
 
 def check_neighbours(col, row):
@@ -62,49 +64,14 @@ def check_neighbours(col, row):
 def is_destructible(mouse_coord):
     col, row = grid_coord(mouse_coord)
     clean()
-    n.append((row, col))
-#    gather_squares(row, col)
 #    print(col, row)
 #    print(GAME_FIELD[col][row])
     print(check_neighbours(col, row))
-    return {}
-
-
-def clean():
-    n.clear()
-    full_n.clear()
-
-
-full_n = []
-n = []
-
-
-def gather_squares(row, col):
-    neighbours_test = check_neighbours(row, col)
-
-    full_n.append((row, col))
-    n.remove((row, col))
-
-    if neighbours_test['right'] and (GAME_FIELD[row][col] == GAME_FIELD[row][col+1]) and (row, col+1) not in full_n:
-        n.append((row, col+1))
-
-    if neighbours_test['left'] and (GAME_FIELD[row][col] == GAME_FIELD[row][col-1]) and (row, col-1) not in full_n:
-        n.append((row, col-1))
-
-    if neighbours_test['top'] and (GAME_FIELD[row][col] == GAME_FIELD[row+1][col]) and (row+1, col) not in full_n:
-        n.append((row+1, col))
-
-    if neighbours_test['bottom'] and (GAME_FIELD[row][col] == GAME_FIELD[row-1][col]) and (row-1, col) not in full_n:
-        n.append((row-1, col))
-
-    if len(n) >= 1:
-        gather_squares(n[0][0], n[0][1])
-
-    return ''
-
-
-def game_loop(testing: bool=False):    
     
+    return False
+
+
+def game_loop(testing: bool=False):
     game_running = True
     while game_running:
         for event in pygame.event.get():
@@ -114,7 +81,6 @@ def game_loop(testing: bool=False):
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 is_destructible(pygame.mouse.get_pos())
-#                make_it_black()
 
         pygame.display.update()
 

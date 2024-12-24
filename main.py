@@ -55,15 +55,27 @@ def grid_coord(xy):
             15 - math.ceil(y / SQUARE_SIZE))
 
 
+def get_all_neighbours(col, row):
+    return [(0, 0)]
+
+
 def check_neighbours(col, row):
     nb = []
+    nb.append((col, row))
+    current_clr = GAME_FIELD[col][row]
+    
+    for col, row in nb:
+        nbs_coords = get_all_neighbours(col, row)
+        
+        for col_nb, row_nb in nbs_coords:
+            if GAME_FIELD[col_nb][row_nb] == current_clr and (col_nb, row_nb) not in nb:
+            nb.append((col_nb, row_nb))
     
     return nb
 
 
 def is_destructible(mouse_coord):
     col, row = grid_coord(mouse_coord)
-    clean()
 #    print(col, row)
 #    print(GAME_FIELD[col][row])
     print(check_neighbours(col, row))

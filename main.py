@@ -31,14 +31,14 @@ ROWS = 13
 COLS = 10
 
 
-def get_color():
+def get_color()->list:
     return list(COLORS.keys())[random.randint(0, len(COLORS) - 1)]
 
 
 GAME_FIELD = [[get_color() for _ in range(ROWS)] for _ in range(COLS)]
 
 
-def draw_squares():
+def draw_squares()->None:
     for i, col in enumerate(GAME_FIELD):
         for j, clr in enumerate(col):
             pygame.draw.rect(game_display,
@@ -49,17 +49,17 @@ def draw_squares():
                                          SQUARE_SIZE))
 
 
-def grid_coord(xy):
+def grid_coord(xy:tuple)->tuple:
     x, y = xy
     return (math.ceil(x / SQUARE_SIZE) - 1,
             15 - math.ceil(y / SQUARE_SIZE))
 
 
-def get_all_neighbours(col, row):
+def get_all_neighbours(col:int, row:int)->list:
     return [(0, 0)]
 
 
-def check_neighbours(col, row):
+def check_neighbours(col:int, row:int)->list:
     nb = []
     nb.append((col, row))
     current_clr = GAME_FIELD[col][row]
@@ -69,21 +69,19 @@ def check_neighbours(col, row):
         
         for col_nb, row_nb in nbs_coords:
             if GAME_FIELD[col_nb][row_nb] == current_clr and (col_nb, row_nb) not in nb:
-            nb.append((col_nb, row_nb))
+                nb.append((col_nb, row_nb))
     
     return nb
 
 
-def is_destructible(mouse_coord):
+def is_destructible(mouse_coord:tuple)->bool:
     col, row = grid_coord(mouse_coord)
-#    print(col, row)
-#    print(GAME_FIELD[col][row])
     print(check_neighbours(col, row))
     
     return False
 
 
-def game_loop(testing: bool=False):
+def game_loop(testing: bool=False)->None:
     game_running = True
     while game_running:
         for event in pygame.event.get():

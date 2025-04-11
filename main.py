@@ -55,24 +55,38 @@ def grid_coord(xy:tuple)->tuple:
             15 - math.ceil(y / SQUARE_SIZE))
 
 
-def get_all_neighbours(col:int, row:int)->list:
-    return [(0, 0)]
+def get_all_neighbours(root_clr:str, coord:tuple)->list:
+    col, row = coord
+    nb = []
+    
+    if col != COLS-1:
+        nb.append((col+1, row))
+    if col != 0:
+        nb.append((col-1, row))
+    if row != ROWS-1:
+        nb.append((col, row+1))
+    if row != 0:
+        nb.append((col, row-1))
+    
+    return check_clrs(root_clr, nb)
+
+
+def check_clrs(clr:str, coords:list)->list:
+    return [(col, row) for col, row in coords if clr==GAME_FIELD[col][row]]
 
 
 def check_neighbours(col:int, row:int)->list:
-    nb = []
-    nb.append((col, row))
-    current_clr = GAME_FIELD[col][row]
+    root = (col, row)
+    root_clr = GAME_FIELD[col][row]
+    nb = get_all_neighbours(root_clr, root)
     
-    for col, row in nb:
-        nbs_coords = get_all_neighbours(col, row)
-        
-        for col_nb, row_nb in nbs_coords:
-            if GAME_FIELD[col_nb][row_nb] == current_clr and (col_nb, row_nb) not in nb:
-                nb.append((col_nb, row_nb))
+#    figure = [root]
+#    
+#    for coord in figure:
+#        l = get_all_neighbours(root_clr, coord)
     
     return nb
-
+    
 
 def is_destructible(mouse_coord:tuple)->bool:
     col, row = grid_coord(mouse_coord)

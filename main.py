@@ -77,17 +77,20 @@ def check_clrs(clr:str, coords:list)->list:
 
 def check_neighbours(clr:str, root:tuple)->list:
     figure = []
-    nb = get_all_neighbours(clr, root)
-    checked = []
     
-#    if not nb:
-#        figure.append(root)
-#    else:
-#        for coord in nb:
-#            checked.append(coord)
-#            check_neighbours(clr, coord)
+    def search(clr, coord, figure):
+        if coord not in figure: figure.append(coord)
+        nb = get_all_neighbours(clr, coord)
+        nb = [coord for coord in nb if coord not in figure]
+        if not nb:
+            return figure
+        else:
+            for n in nb:
+                return search(clr, n, figure)
     
-    return figure
+        return figure
+    
+    return search(clr, root, figure)
     
 
 def is_destructible(mouse_coord:tuple)->bool:

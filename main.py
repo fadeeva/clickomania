@@ -75,22 +75,22 @@ def check_clrs(clr:str, coords:list)->list:
     return [(col, row) for col, row in coords if clr==GAME_FIELD[col][row]]
 
 
-def check_neighbours(clr:str, root:tuple)->list:
+def check_neighbours(clr:str, coord:tuple)->list:
     figure = []
     
-    def search(clr, coord, figure):
+    def search(coord:tuple)->list:
         if coord not in figure: figure.append(coord)
-        nb = get_all_neighbours(clr, coord)
-        nb = [coord for coord in nb if coord not in figure]
-        if not nb:
+        nbs = get_all_neighbours(clr, coord)
+        nbs = [coord for coord in nbs if coord not in figure]
+        if not nbs:
             return figure
         else:
-            for n in nb:
-                return search(clr, n, figure)
+            for nb in nbs:
+                search(nb)
     
         return figure
     
-    return search(clr, root, figure)
+    return search(coord)
     
 
 def is_destructible(mouse_coord:tuple)->bool:

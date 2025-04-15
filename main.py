@@ -75,13 +75,16 @@ def check_clrs(clr:str, coords:list)->list:
     return [(col, row) for col, row in coords if clr==GAME_FIELD[col][row]]
 
 
-def check_neighbours(clr:str, coord:tuple)->list:
+def check_neighbours(coord:tuple)->list:
     figure = []
+    col, row = coord
+    clr = GAME_FIELD[col][row]
     
     def search(coord:tuple)->list:
         if coord not in figure: figure.append(coord)
         nbs = get_all_neighbours(clr, coord)
         nbs = [coord for coord in nbs if coord not in figure]
+        
         if not nbs:
             return figure
         else:
@@ -94,10 +97,11 @@ def check_neighbours(clr:str, coord:tuple)->list:
     
 
 def is_destructible(mouse_coord:tuple)->bool:
-    col, row = grid_coord(mouse_coord)
-    print(check_neighbours(GAME_FIELD[col][row], (col, row)))
+    coord = grid_coord(mouse_coord)
+    figure = check_neighbours(coord)
+    print(figure)
     
-    return False
+    return True if len(figure)>1 else False
 
 
 def game_loop(testing: bool=False)->None:
@@ -109,7 +113,7 @@ def game_loop(testing: bool=False)->None:
                 quit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                is_destructible(pygame.mouse.get_pos())
+                print(is_destructible(pygame.mouse.get_pos()))
 
         pygame.display.update()
 

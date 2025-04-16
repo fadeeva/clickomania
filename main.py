@@ -39,8 +39,13 @@ GAME_FIELD = [[get_color() for _ in range(ROWS)] for _ in range(COLS)]
 
 
 def draw_squares()->None:
+    background = pygame.image.load(bg_img).convert()
+    game_display.fill(black)
+    game_display.blit(background, (100, 182))
+    
     for i, col in enumerate(GAME_FIELD):
         for j, clr in enumerate(col):
+            if clr == 'black': continue
             pygame.draw.rect(game_display,
                              COLORS[clr],
                              pygame.Rect(i*SQUARE_SIZE,
@@ -49,10 +54,10 @@ def draw_squares()->None:
                                          SQUARE_SIZE))
 
 
-def grid_coord(xy:tuple)->tuple:
-    x, y = xy
-    return (math.ceil(x / SQUARE_SIZE) - 1,
-            15 - math.ceil(y / SQUARE_SIZE))
+def grid_coord(coord:tuple)->tuple:
+    col, row = coord
+    return (math.ceil(col / SQUARE_SIZE) - 1,
+            15 - math.ceil(row / SQUARE_SIZE))
 
 
 def get_all_neighbours(root_clr:str, coord:tuple)->list:
@@ -96,12 +101,32 @@ def check_neighbours(coord:tuple)->list:
     return search(coord)
     
 
-def is_destructible(mouse_coord:tuple)->bool:
+def get_figure(mouse_coord:tuple)->list:
     coord = grid_coord(mouse_coord)
     figure = check_neighbours(coord)
-    print(figure)
     
-    return True if len(figure)>1 else False
+    return figure
+
+
+def delete_figure(figure:list)->bool:
+    for col, row in figure:
+#        pygame.draw.rect(game_display,
+#                         black,
+#                         pygame.Rect(col*SQUARE_SIZE,
+#                                     abs(row-14)*SQUARE_SIZE,
+#                                     SQUARE_SIZE,
+#                                     SQUARE_SIZE))
+        GAME_FIELD[col][row] = 'black'
+
+    clearing_field()
+    draw_squares()
+    
+    return False
+
+
+def clearing_field():
+#        GAME_FIELD[col].pop(row)
+    pass
 
 
 def game_loop(testing: bool=False)->None:
@@ -113,7 +138,9 @@ def game_loop(testing: bool=False)->None:
                 quit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print(is_destructible(pygame.mouse.get_pos()))
+                figure = get_figure(pygame.mouse.get_pos())
+                if len(figure)>1:
+                    delete_figure(figure)
 
         pygame.display.update()
 
@@ -125,11 +152,6 @@ if __name__ == '__main__':
     pygame.display.set_caption('CLICKOMANIA')
     clock = pygame.time.Clock()
 
-    background = pygame.image.load(bg_img).convert()
-    
-    game_display.fill(black)
-
-    game_display.blit(background, (100, 182))
     draw_squares()
     
     game_loop()

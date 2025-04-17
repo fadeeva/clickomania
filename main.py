@@ -64,11 +64,15 @@ def get_all_neighbours(root_clr:str, coord:tuple)->list:
     col, row = coord
     nb = []
     
-    if col != COLS-1:
-        nb.append((col+1, row))
+    if col != len(GAME_FIELD)-1:
+        if len(GAME_FIELD[col+1])-1>=row:
+            nb.append((col+1, row))
+        
     if col != 0:
-        nb.append((col-1, row))
-    if row != ROWS-1:
+        if len(GAME_FIELD[col-1])-1>=row:
+            nb.append((col-1, row))
+        
+    if row != len(GAME_FIELD[col])-1:
         nb.append((col, row+1))
     if row != 0:
         nb.append((col, row-1))
@@ -83,7 +87,7 @@ def check_clrs(clr:str, coords:list)->list:
 def check_neighbours(coord:tuple)->list:
     figure = []
     col, row = coord
-    clr = GAME_FIELD[col][row]
+    clr = GAME_FIELD[col][row] # check existance!!!
     
     def search(coord:tuple)->list:
         if coord not in figure: figure.append(coord)
@@ -110,23 +114,14 @@ def get_figure(mouse_coord:tuple)->list:
 
 def delete_figure(figure:list)->bool:
     for col, row in figure:
-#        pygame.draw.rect(game_display,
-#                         black,
-#                         pygame.Rect(col*SQUARE_SIZE,
-#                                     abs(row-14)*SQUARE_SIZE,
-#                                     SQUARE_SIZE,
-#                                     SQUARE_SIZE))
         GAME_FIELD[col][row] = 'black'
 
-    clearing_field()
+    for col, row in enumerate(GAME_FIELD):
+        GAME_FIELD[col] = [elm for elm in row if elm != 'black']
+    
     draw_squares()
     
     return False
-
-
-def clearing_field():
-#        GAME_FIELD[col].pop(row)
-    pass
 
 
 def game_loop(testing: bool=False)->None:

@@ -37,6 +37,10 @@ def get_color()->list:
 
 GAME_FIELD = [[get_color() for _ in range(ROWS)] for _ in range(COLS)]
 
+def check_GAME_FIELD()->None:
+    global GAME_FIELD
+    GAME_FIELD = [col for col in GAME_FIELD if col]
+
 
 def draw_squares()->None:
     background = pygame.image.load(bg_img).convert()
@@ -87,7 +91,10 @@ def check_clrs(clr:str, coords:list)->list:
 def check_neighbours(coord:tuple)->list:
     figure = []
     col, row = coord
-    clr = GAME_FIELD[col][row] # check existance!!!
+    try:
+        clr = GAME_FIELD[col][row]
+    except:
+        return []
     
     def search(coord:tuple)->list:
         if coord not in figure: figure.append(coord)
@@ -118,6 +125,8 @@ def delete_figure(figure:list)->bool:
 
     for col, row in enumerate(GAME_FIELD):
         GAME_FIELD[col] = [elm for elm in row if elm != 'black']
+    
+    check_GAME_FIELD()
     
     draw_squares()
     

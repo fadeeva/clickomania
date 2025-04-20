@@ -27,9 +27,6 @@ COLORS = {
 
 SQUARE_SIZE = 40
 
-#ROWS = 13
-#COLS = 10
-
 
 class GAME_FIELD():
     _ROWS = 13
@@ -44,13 +41,6 @@ class GAME_FIELD():
         return [[self._get_color() for _ in range(self._ROWS)] for _ in range(self._COLS)]
 
 
-    
-
-#def get_color()->list:
-#    return list(COLORS.keys())[random.randint(0, len(COLORS) - 1)]
-
-
-#GAME_FIELD = [[get_color() for _ in range(ROWS)] for _ in range(COLS)]
 GAME_FIELD = GAME_FIELD().data
 
 def check_GAME_FIELD()->None:

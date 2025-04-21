@@ -35,7 +35,11 @@ def get_color()->list:
     return list(COLORS.keys())[random.randint(0, len(COLORS) - 1)]
 
 
-GAME_FIELD = [[get_color() for _ in range(ROWS)] for _ in range(COLS)]
+def get_GAME_FIELD()->list:
+    return [[get_color() for _ in range(ROWS)] for _ in range(COLS)]
+
+
+GAME_FIELD = []
 
 
 def check_GAME_FIELD()->None:
@@ -156,7 +160,8 @@ if __name__ == '__main__':
     game_display = pygame.display.set_mode((display_width, display_height))
     pygame.display.set_caption('CLICKOMANIA')
     clock = pygame.time.Clock()
-
+    
+    GAME_FIELD = get_GAME_FIELD()
     draw_squares()
     
     game_loop()

@@ -40,17 +40,25 @@ def get_GAME_FIELD()->list:
 
 
 GAME_FIELD = []
-
+click_REGISTOR = {}
 
 def check_GAME_FIELD()->None:
     global GAME_FIELD
     GAME_FIELD = [col for col in GAME_FIELD if col]
 
 
+def draw_btns():
+    replay_btn = pygame.image.load('btn_arrow_replay.svg')
+    game_display.blit(replay_btn, (display_width/2, 10))
+    click_REGISTOR['replay_btn'] = replay_btn.get_rect(topleft=(10, display_width/2))
+    
+
 def draw_squares()->None:
     background = pygame.image.load(bg_img).convert()
     game_display.fill(black)
     game_display.blit(background, (100, 182))
+    
+    draw_btns()
     
     for i, col in enumerate(GAME_FIELD):
         for j, clr in enumerate(col):

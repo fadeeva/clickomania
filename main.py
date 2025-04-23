@@ -42,6 +42,13 @@ def get_GAME_FIELD()->list:
 GAME_FIELD = []
 click_REGISTOR = {}
 
+
+def start_game()->None:
+    global GAME_FIELD
+    GAME_FIELD = get_GAME_FIELD()
+    draw_squares()
+
+
 def check_GAME_FIELD()->None:
     global GAME_FIELD
     GAME_FIELD = [col for col in GAME_FIELD if col]
@@ -146,6 +153,14 @@ def delete_figure(figure:list)->bool:
     return False
 
 
+def replay(coord:tuple)->bool:
+    if click_REGISTOR['replay_btn'].collidepoint(coord[::-1]):
+        start_game()
+        return True
+    
+    return False
+
+
 def game_loop(testing: bool=False)->None:
     game_running = True
     while game_running:
@@ -155,9 +170,10 @@ def game_loop(testing: bool=False)->None:
                 quit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                figure = get_figure(pygame.mouse.get_pos())
-                if len(figure)>1:
-                    delete_figure(figure)
+                if not replay(event.pos):
+                    figure = get_figure(event.pos)
+                    if len(figure)>1:
+                        delete_figure(figure)
 
         pygame.display.update()
 
@@ -169,8 +185,7 @@ if __name__ == '__main__':
     pygame.display.set_caption('CLICKOMANIA')
     clock = pygame.time.Clock()
     
-    GAME_FIELD = get_GAME_FIELD()
-    draw_squares()
+    start_game()
     
     game_loop()
     

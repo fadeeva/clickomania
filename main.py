@@ -40,7 +40,7 @@ def get_GAME_FIELD()->list:
 
 
 GAME_FIELD = []
-click_REGISTOR = {}
+REPLAY_btn = None
 
 
 def start_game()->None:
@@ -55,9 +55,11 @@ def check_GAME_FIELD()->None:
 
 
 def draw_btns():
-    replay_btn = pygame.image.load('btn_arrow_replay.svg')
-    game_display.blit(replay_btn, (display_width/2, 10))
-    click_REGISTOR['replay_btn'] = replay_btn.get_rect(topleft=(10, display_width/2))
+    global REPLAY_btn
+    
+    replay_btn_img = pygame.image.load('btn_arrow_replay.svg')
+    game_display.blit(replay_btn_img, (display_width/2, 10))
+    REPLAY_btn = replay_btn_img.get_rect(topleft=(10, display_width/2))
     
 
 def draw_squares()->None:
@@ -154,7 +156,7 @@ def delete_figure(figure:list)->bool:
 
 
 def replay(coord:tuple)->bool:
-    if click_REGISTOR['replay_btn'].collidepoint(coord[::-1]):
+    if REPLAY_btn.collidepoint(coord[::-1]):
         start_game()
         return True
     

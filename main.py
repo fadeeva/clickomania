@@ -39,19 +39,19 @@ def get_GAME_FIELD()->list:
     return [[get_color() for _ in range(ROWS)] for _ in range(COLS)]
 
 
-GAME_FIELD = []
+GAME_FIELD = {
+    'grid': []
+}
 REPLAY_btn = None
 
 
 def start_game()->None:
-    global GAME_FIELD
-    GAME_FIELD = get_GAME_FIELD()
+    GAME_FIELD['grid'] = get_GAME_FIELD()
     draw_squares()
 
 
 def check_GAME_FIELD()->None:
-    global GAME_FIELD
-    GAME_FIELD = [col for col in GAME_FIELD if col]
+    GAME_FIELD['grid'] = [col for col in GAME_FIELD['grid'] if col]
 
 
 def draw_btns():
@@ -69,7 +69,7 @@ def draw_squares()->None:
     
     draw_btns()
     
-    for i, col in enumerate(GAME_FIELD):
+    for i, col in enumerate(GAME_FIELD['grid']):
         for j, clr in enumerate(col):
             if clr == 'black': continue
             pygame.draw.rect(game_display,
@@ -90,15 +90,15 @@ def get_all_neighbours(root_clr:str, coord:tuple)->list:
     col, row = coord
     nb = []
     
-    if col != len(GAME_FIELD)-1:
-        if len(GAME_FIELD[col+1])-1>=row:
+    if col != len(GAME_FIELD['grid'])-1:
+        if len(GAME_FIELD['grid'][col+1])-1>=row:
             nb.append((col+1, row))
         
     if col != 0:
-        if len(GAME_FIELD[col-1])-1>=row:
+        if len(GAME_FIELD['grid'][col-1])-1>=row:
             nb.append((col-1, row))
         
-    if row != len(GAME_FIELD[col])-1:
+    if row != len(GAME_FIELD['grid'][col])-1:
         nb.append((col, row+1))
     if row != 0:
         nb.append((col, row-1))
@@ -107,14 +107,14 @@ def get_all_neighbours(root_clr:str, coord:tuple)->list:
 
 
 def check_clrs(clr:str, coords:list)->list:
-    return [(col, row) for col, row in coords if clr==GAME_FIELD[col][row]]
+    return [(col, row) for col, row in coords if clr==GAME_FIELD['grid'][col][row]]
 
 
 def check_neighbours(coord:tuple)->list:
     figure = []
     col, row = coord
     try:
-        clr = GAME_FIELD[col][row]
+        clr = GAME_FIELD['grid'][col][row]
     except:
         return []
     
@@ -143,10 +143,10 @@ def get_figure(mouse_coord:tuple)->list:
 
 def delete_figure(figure:list)->bool:
     for col, row in figure:
-        GAME_FIELD[col][row] = 'black'
+        GAME_FIELD['grid'][col][row] = 'black'
 
-    for col, row in enumerate(GAME_FIELD):
-        GAME_FIELD[col] = [elm for elm in row if elm != 'black']
+    for col, row in enumerate(GAME_FIELD['grid']):
+        GAME_FIELD['grid'][col] = [elm for elm in row if elm != 'black']
     
     check_GAME_FIELD()
     

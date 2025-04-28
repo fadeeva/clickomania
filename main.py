@@ -56,19 +56,23 @@ def check_GAME_FIELD()->None:
     GAME_FIELD['grid'] = [col for col in GAME_FIELD['grid'] if col]
 
 
-def draw_btns():
+def draw_btns()->None:
     replay_btn_img = pygame.image.load('btn_arrow_replay.svg')
     game_display.blit(replay_btn_img, (display_width/2, 10))
     BTNs['replay'] = replay_btn_img.get_rect(topleft=(10, display_width/2))
     
 
-def draw_squares()->None:
+def draw_background()->None:
     background = pygame.image.load(bg_img).convert()
     game_display.fill(black)
     game_display.blit(background, (100, 182))
     
     draw_btns()
+
     
+def draw_squares()->None:
+    draw_background()
+
     for i, col in enumerate(GAME_FIELD['grid']):
         for j, clr in enumerate(col):
             if clr == 'black': continue

@@ -51,11 +51,7 @@ def start_game()->None:
     GAME_FIELD['grid'] = get_GAME_FIELD()
     draw_squares()
 
-
-def check_GAME_FIELD()->None:
-    GAME_FIELD['grid'] = [col for col in GAME_FIELD['grid'] if col]
-
-
+    
 def draw_btns()->None:
     replay_btn_img = pygame.image.load('btn_arrow_replay.svg')
     game_display.blit(replay_btn_img, (display_width/2, 10))
@@ -69,7 +65,20 @@ def draw_background()->None:
     
     draw_btns()
 
+
+def replay(coord:tuple)->bool:
+    if BTNs['replay'].collidepoint(coord[::-1]):
+        start_game()
+        return True
     
+    return False
+
+
+###################################################
+def check_GAME_FIELD()->None:
+    GAME_FIELD['grid'] = [col for col in GAME_FIELD['grid'] if col]
+
+
 def draw_squares()->None:
     draw_background()
 
@@ -145,7 +154,7 @@ def get_figure(mouse_coord:tuple)->list:
     return figure
 
 
-def delete_figure(figure:list)->bool:
+def delete_figure(figure:list)->None:
     for col, row in figure:
         GAME_FIELD['grid'][col][row] = 'black'
 
@@ -155,16 +164,6 @@ def delete_figure(figure:list)->bool:
     check_GAME_FIELD()
     
     draw_squares()
-    
-    return False
-
-
-def replay(coord:tuple)->bool:
-    if BTNs['replay'].collidepoint(coord[::-1]):
-        start_game()
-        return True
-    
-    return False
 
 
 def game_loop(testing: bool=False)->None:

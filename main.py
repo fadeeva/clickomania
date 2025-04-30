@@ -164,8 +164,21 @@ def delete_figure(figure:list)->None:
     check_GAME_FIELD()
     
     draw_squares()
+    
+    am_I_win()
 
+    
+def am_I_win()->bool:
+    if count_squares():
+        return False
+    print('Yes')
+    return True
+    
 
+def count_squares()->int:
+    return sum(len(row) for row in GAME_FIELD['grid'])
+    
+    
 def game_loop(testing: bool=False)->None:
     game_running = True
     while game_running:

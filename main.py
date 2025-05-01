@@ -165,19 +165,18 @@ def delete_figure(figure:list)->None:
     
     draw_squares()
     
-    am_I_win()
+    if am_I_win(): show_win_message()
 
     
 def am_I_win()->bool:
-    if count_squares():
-        return False
-    print('Yes')
-    return True
+    squares_left = sum(len(row) for row in GAME_FIELD['grid'])
     
+    return True if not squares_left else False
 
-def count_squares()->int:
-    return sum(len(row) for row in GAME_FIELD['grid'])
-    
+
+def show_win_message():
+    print('You are win')
+
     
 def game_loop(testing: bool=False)->None:
     game_running = True

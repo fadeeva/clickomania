@@ -155,6 +155,9 @@ def get_figure(mouse_coord:tuple)->list:
 
 
 def delete_figure(figure:list)->None:
+    if len(figure)<2:
+        return
+    
     for col, row in figure:
         GAME_FIELD['grid'][col][row] = 'black'
 
@@ -189,8 +192,7 @@ def game_loop(testing: bool=False)->None:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if not replay(event.pos):
                     figure = get_figure(event.pos)
-                    if len(figure)>1:
-                        delete_figure(figure)
+                    delete_figure(figure)
 
         pygame.display.update()
 

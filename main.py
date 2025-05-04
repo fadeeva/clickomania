@@ -46,6 +46,8 @@ BTNs = {
     'replay': None
 }
 
+IMGs = {}
+
 
 def start_game()->None:
     GAME_FIELD['grid'] = get_GAME_FIELD()
@@ -167,7 +169,7 @@ def delete_figure(figure:list)->None:
     check_GAME_FIELD()
     
     draw_squares()
-    show_win_message()
+#    show_win_message()
     if am_I_win(): show_win_message()
 
     
@@ -181,8 +183,11 @@ def show_win_message():
     pygame.draw.rect(game_display,
                      white,
                      pygame.Rect(display_width/2-3*SQUARE_SIZE,
-                                 5*SQUARE_SIZE,
+                                 1.5*SQUARE_SIZE,
                                  6*SQUARE_SIZE, 3*SQUARE_SIZE))
+    
+    msg_img = pygame.image.load('win_message.svg')
+    game_display.blit(msg_img, (display_width/2-3*SQUARE_SIZE+10, 1.5*SQUARE_SIZE+10))
 
     
 def game_loop(testing: bool=False)->None:

@@ -46,7 +46,10 @@ BTNs = {
     'replay': None
 }
 
-IMGs = {}
+IMGs = {
+    'replay_btn': pygame.image.load('btn_arrow_replay.svg'),
+    'win_msg'   : pygame.image.load('win_message.svg'),
+}
 
 
 def start_game()->None:
@@ -55,9 +58,8 @@ def start_game()->None:
 
     
 def draw_btns()->None:
-    replay_btn_img = pygame.image.load('btn_arrow_replay.svg')
-    game_display.blit(replay_btn_img, (display_width/2, 10))
-    BTNs['replay'] = replay_btn_img.get_rect(topleft=(10, display_width/2))
+    game_display.blit(IMGs['replay_btn'], (display_width/2, 10))
+    BTNs['replay'] = IMGs['replay_btn'].get_rect(topleft=(10, display_width/2))
     
 
 def draw_background()->None:
@@ -179,15 +181,14 @@ def am_I_win()->bool:
     return True if not squares_left else False
 
 
-def show_win_message():
-    pygame.draw.rect(game_display,
-                     white,
-                     pygame.Rect(display_width/2-3*SQUARE_SIZE,
-                                 1.5*SQUARE_SIZE,
+def show_win_message()->None:
+    msg_width = display_width/2-3*SQUARE_SIZE
+    msg_height = 1.5*SQUARE_SIZE
+    pygame.draw.rect(game_display, white,
+                     pygame.Rect(msg_width, msg_height,
                                  6*SQUARE_SIZE, 3*SQUARE_SIZE))
     
-    msg_img = pygame.image.load('win_message.svg')
-    game_display.blit(msg_img, (display_width/2-3*SQUARE_SIZE+10, 1.5*SQUARE_SIZE+10))
+    game_display.blit(IMGs['win_msg'], (msg_width+10, msg_height+10))
 
     
 def game_loop(testing: bool=False)->None:

@@ -3,8 +3,6 @@ import random
 import math
 
 
-bg_img = 'prison_mike.jpg'
-
 display_width  = 400
 display_height = 600
 
@@ -30,6 +28,20 @@ SQUARE_SIZE = 40
 ROWS = 13
 COLS = 10
 
+GAME_FIELD = {
+    'grid': []
+}
+
+IMGs = {
+    'replay_btn': pygame.image.load('btn_arrow_replay.svg'),
+    'win_msg'   : pygame.image.load('win_message.svg'),
+    'background': pygame.image.load('prison_mike.jpg'),
+}
+
+BTNs = {
+    'replay': IMGs['replay_btn'].get_rect(topleft=(10, display_width/2))
+}
+
 
 def get_color()->list:
     return list(COLORS.keys())[random.randint(0, len(COLORS) - 1)]
@@ -39,19 +51,6 @@ def get_GAME_FIELD()->list:
     return [[get_color() for _ in range(ROWS)] for _ in range(COLS)]
 
 
-GAME_FIELD = {
-    'grid': []
-}
-BTNs = {
-    'replay': None
-}
-
-IMGs = {
-    'replay_btn': pygame.image.load('btn_arrow_replay.svg'),
-    'win_msg'   : pygame.image.load('win_message.svg'),
-}
-
-
 def start_game()->None:
     GAME_FIELD['grid'] = get_GAME_FIELD()
     draw_squares()
@@ -59,13 +58,11 @@ def start_game()->None:
     
 def draw_btns()->None:
     game_display.blit(IMGs['replay_btn'], (display_width/2, 10))
-    BTNs['replay'] = IMGs['replay_btn'].get_rect(topleft=(10, display_width/2))
     
 
 def draw_background()->None:
-    background = pygame.image.load(bg_img).convert()
     game_display.fill(black)
-    game_display.blit(background, (100, 182))
+    game_display.blit(IMGs['background'], (100, 182))
     
     draw_btns()
 

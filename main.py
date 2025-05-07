@@ -3,8 +3,10 @@ import random
 import math
 
 
-display_width  = 400
-display_height = 600
+SCREEN = {
+    'width': 400,
+    'height': 600,
+}
 
 black  = (36, 52, 53)
 white  = (232, 245, 240)
@@ -39,7 +41,7 @@ IMGs = {
 }
 
 BTNs = {
-    'replay': IMGs['replay_btn'].get_rect(topleft=(10, display_width/2))
+    'replay': IMGs['replay_btn'].get_rect(topleft=(10, SCREEN['width']/2))
 }
 
 
@@ -57,7 +59,7 @@ def start_game()->None:
 
     
 def draw_btns()->None:
-    game_display.blit(IMGs['replay_btn'], (display_width/2, 10))
+    game_display.blit(IMGs['replay_btn'], (SCREEN['width']/2, 10))
     
 
 def draw_background()->None:
@@ -179,7 +181,7 @@ def am_I_win()->bool:
 
 
 def show_win_message()->None:
-    msg_width = display_width/2-3*SQUARE_SIZE
+    msg_width = SCREEN['width']/2-3*SQUARE_SIZE
     msg_height = 1.5*SQUARE_SIZE
     pygame.draw.rect(game_display, white,
                      pygame.Rect(msg_width, msg_height,
@@ -207,7 +209,7 @@ def game_loop(testing: bool=False)->None:
 if __name__ == '__main__':
     pygame.init()
     
-    game_display = pygame.display.set_mode((display_width, display_height))
+    game_display = pygame.display.set_mode((SCREEN['width'], SCREEN['height']))
     pygame.display.set_caption('CLICKOMANIA')
     clock = pygame.time.Clock()
     

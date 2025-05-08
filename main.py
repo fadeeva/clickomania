@@ -3,11 +3,6 @@ import random
 import math
 
 
-SCREEN = {
-    'width': 400,
-    'height': 600,
-}
-
 black  = (36, 52, 53)
 white  = (232, 245, 240)
 
@@ -17,12 +12,22 @@ green  = (52, 206, 147)
 yellow = (255, 204, 95)
 brown  = (127, 113, 97)
 
+SCREEN = {
+    'width' : 400,
+    'height': 600,
+}
+
+SETTINGS = {
+    'bg_clr'  : black,
+    'caption' : 'CLICKOMANIA',
+}
+
 COLORS = {
-    'red': red,
-    'blue': blue,
-    'green': green,
+    'red'   : red,
+    'blue'  : blue,
+    'green' : green,
     'yellow': yellow,
-    'brown': brown
+    'brown' : brown
 }
 
 SQUARE_SIZE = 40
@@ -45,6 +50,7 @@ BTNs = {
 }
 
 
+###################################################
 def get_color()->list:
     return list(COLORS.keys())[random.randint(0, len(COLORS) - 1)]
 
@@ -63,7 +69,7 @@ def draw_btns()->None:
     
 
 def draw_background()->None:
-    game_display.fill(black)
+    game_display.fill(SETTINGS['bg_clr'])
     game_display.blit(IMGs['background'], (100, 182))
     
     draw_btns()
@@ -77,6 +83,16 @@ def replay(coord:tuple)->bool:
     return False
 
 
+def show_win_message()->None:
+    msg_width = SCREEN['width']/2-3*SQUARE_SIZE
+    msg_height = 1.5*SQUARE_SIZE
+    pygame.draw.rect(game_display, white,
+                     pygame.Rect(msg_width, msg_height,
+                                 6*SQUARE_SIZE, 3*SQUARE_SIZE))
+    
+    game_display.blit(IMGs['win_msg'], (msg_width+10, msg_height+10))
+    
+    
 ###################################################
 def check_GAME_FIELD()->None:
     GAME_FIELD['grid'] = [col for col in GAME_FIELD['grid'] if col]
@@ -179,16 +195,6 @@ def am_I_win()->bool:
     
     return True if not squares_left else False
 
-
-def show_win_message()->None:
-    msg_width = SCREEN['width']/2-3*SQUARE_SIZE
-    msg_height = 1.5*SQUARE_SIZE
-    pygame.draw.rect(game_display, white,
-                     pygame.Rect(msg_width, msg_height,
-                                 6*SQUARE_SIZE, 3*SQUARE_SIZE))
-    
-    game_display.blit(IMGs['win_msg'], (msg_width+10, msg_height+10))
-
     
 def game_loop(testing: bool=False)->None:
     game_running = True
@@ -210,7 +216,7 @@ if __name__ == '__main__':
     pygame.init()
     
     game_display = pygame.display.set_mode((SCREEN['width'], SCREEN['height']))
-    pygame.display.set_caption('CLICKOMANIA')
+    pygame.display.set_caption(SETTINGS['caption'])
     clock = pygame.time.Clock()
     
     start_game()

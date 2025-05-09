@@ -91,7 +91,13 @@ def show_win_message()->None:
                                  6*SQUARE_SIZE, 3*SQUARE_SIZE))
     
     game_display.blit(IMGs['win_msg'], (msg_width+10, msg_height+10))
+
+
+def am_I_win()->bool:
+    squares_left = sum(len(row) for row in GAME_FIELD['grid'])
     
+    return True if not squares_left else False
+
     
 ###################################################
 def check_GAME_FIELD()->None:
@@ -184,18 +190,10 @@ def delete_figure(figure:list)->None:
         GAME_FIELD['grid'][col] = [elm for elm in row if elm != 'black']
     
     check_GAME_FIELD()
-    
     draw_squares()
-#    show_win_message()
-    if am_I_win(): show_win_message()
 
-    
-def am_I_win()->bool:
-    squares_left = sum(len(row) for row in GAME_FIELD['grid'])
-    
-    return True if not squares_left else False
 
-    
+###################################################
 def game_loop(testing: bool=False)->None:
     game_running = True
     while game_running:
@@ -208,14 +206,16 @@ def game_loop(testing: bool=False)->None:
                 if not replay(event.pos):
                     figure = get_figure(event.pos)
                     delete_figure(figure)
+                    if am_I_win(): show_win_message()
 
         pygame.display.update()
-
+###################################################
 
 if __name__ == '__main__':
     pygame.init()
     
-    game_display = pygame.display.set_mode((SCREEN['width'], SCREEN['height']))
+    game_display = pygame.display.set_mode((SCREEN['width'],
+                                            SCREEN['height']))
     pygame.display.set_caption(SETTINGS['caption'])
     clock = pygame.time.Clock()
     

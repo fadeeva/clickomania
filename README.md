@@ -1,2 +1,2 @@
 # Clickomania
-![Clickomania game screen](screen.png "Clickomania game screen")
+![Clickomania game screen](screen.PNG "Clickomania game screen")

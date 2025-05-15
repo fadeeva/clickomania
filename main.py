@@ -6,11 +6,6 @@ import math
 black  = (36, 52, 53)
 white  = (232, 245, 240)
 
-red    = (249, 102, 56)
-blue   = (48, 96, 249)
-green  = (52, 206, 147)
-yellow = (255, 204, 95)
-brown  = (127, 113, 97)
 
 SCREEN = {
     'width' : 400,
@@ -23,11 +18,11 @@ SETTINGS = {
 }
 
 COLORS = {
-    'red'   : red,
-    'blue'  : blue,
-    'green' : green,
-    'yellow': yellow,
-    'brown' : brown
+    'red'   : (249, 102, 56),
+    'blue'  : (48, 96, 249),
+    'green' : (52, 206, 147),
+    'yellow': (255, 204, 95),
+    'brown' : (127, 113, 97),
 }
 
 SQUARE_SIZE = 40
